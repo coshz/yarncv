@@ -1,0 +1,23 @@
+### config to overwrite default values defined in class config.C ###
+
+mode: 'train' # 'train' | 'test'
+
+# [directory] #
+
+out_dir: 'out/'
+# log_dir: 'log/'
+# ckpt_dir: 'ckpt/'
+
+# [dataset] #
+data_dir: '../../data/'
+data_train: 'refined/yarn-refined.train.csv'
+data_test: 'refined/yarn-refined.test.csv'
+
+# [model] #
+model_name: 'efficientnet'
+
+# [train] #
+epochs: 100 
+# val_inteval: 2
+batch_size: 1
+# learning_rate: 1E-3
