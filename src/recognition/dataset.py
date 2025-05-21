@@ -20,12 +20,14 @@ class YARN_Dataset(Dataset):
     
     def __getitem__(self, index):
         img_path, img_label = self.data.loc[index].iloc[0], self.data.loc[index].iloc[1]
-
+        
+        # grayout, resize, toTensor
         img = transforms.Compose([
             transforms.Grayscale(num_output_channels=1),
             transforms.Resize((224, 224)),
             transforms.ToTensor()
         ])(Image.open(os.path.join(self.data_dir, img_path)))
+        if img_label > 3: img_label -= 1
         label = torch.tensor(img_label, dtype=torch.long)
 
         # apply transform 

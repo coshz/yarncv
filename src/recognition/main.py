@@ -9,7 +9,7 @@ def make_argparser():
     parser.add_argument("--bs", type=int, help="batch size", )
     parser.add_argument("--config", default="config/default.yaml", help="config file", )
     parser.add_argument("--model", help="model name")
-    parser.add_argument("--test", nargs="?", const='{model_name}-default.pth', help="run in test model")
+    parser.add_argument("--test", nargs="?", const='', help="run in test model")
     return parser
 
 
@@ -30,8 +30,8 @@ def init_config():
 if __name__ == '__main__':
     args = init_config()
     trainer = YarnTrainer(train=(args.test is None))
-    if args.test:
-        ckpt = args.test.format(model_name=C.MODEL_NAME)
-        trainer.test(ckpt)
+    if args.test is not None:
+        trainer.test(args.test)
     else:
         trainer.train_and_validate(C.EPOCHS, C.VAL_INTERVAL, resume=True)
+        trainer.test()

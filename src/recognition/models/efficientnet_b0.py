@@ -2,6 +2,7 @@ import torchvision
 import torch.nn as nn
 import torch.nn.functional as F
 
+
 def net_from_efficientnet_b0(in_channel=1, out_dim=5):
     # modify in_dim and out_dim
     net = torchvision.models.efficientnet_b0()
