@@ -2,7 +2,7 @@
 .DS_Store
 .history
 __pycache__
-tmp
 data/*
+tmp/
 *.log
 *.pth
