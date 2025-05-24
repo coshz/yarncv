@@ -4,31 +4,22 @@ About YarnCV
 	- camera sampling at fps=30
 
 1. Yarn Dataset
-	- directory: "data/refined-2";
-	- num classes=4: 0=normal, 1~4=abnormal. *Note: label-3 is sikpped since it depends heavily on real-time grab;
-	- train/test spliting: see `write2csv.py`;
+	- directory: "data/refined" and "data/refined-2/"; *Note: label-3 is sikpped since it depends heavily on real-time*;
+	- num classes=4: 0=normal, 1~4=abnormal. 
 
 2. model, ckpt and metrics
-	- modified resnet18: ckpt/efficientnet-100.00, acc=47
-	- modified efficientnet-b0: ckpt/resnet-100.00.pth, acc=54
-	- yarn_sim: ckpt/yarn_sim2-100.00.pth, acc=76.62
-	- yarn_sim2: ckpt/yarn_sim2-100.00.pth, acc=100.0
+	- models: modified resnet18, modified efficientnet-b0, yarn_sim, yarn_sim2 (best acc=100)
+	- ckpt: see "out/ckpt/"
+	- metrics: accuracy
 
-3. challenge 
-	- test model on another testset "data/img-test" (different visual field from "data/refined-2")
-	- performance of model yarn_sim2: ~50 acc
-
-4. another attempt: visual large model 
+3. another attempt: visual large model 
+	- challenge: yarn_sim2 has poor acc (~50) on img-test 
 	- prompt engineering: 
 		- Qwen-vl-max: ~75 acc
-	- fine-tuning (future work)
-		- peft + LoRA 
-		- http api: see bailian.console.aliyun.com
+	- future work: supervised fine-tuning 
+		- method: peft + LoRA 
+		- useful platforms: bailian.console.aliyun.com
 
-5. related resources (urls)
+4. related resources (urls)
 	- data: see data/.gitkeep
 	- ckpt: see src/recognition/out/ckpt/.gitkeep
-
-
-
-
