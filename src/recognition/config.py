@@ -1,18 +1,19 @@
 import os 
 import yaml
 
-class C:
-    OUT_DIR     = 'out/'
-    LOG_DIR     = "log/" 
-    CKPT_DIR    = "ckpt/"
 
-    # data parameters
-    DATA_DIR    = "../../data"
-    DATA_TRAIN  = "refined/yarn-refined.train.csv"
-    DATA_TEST   = "refined/yarn-refined.test.csv"
+class C:
+    OUT_DIR     = './out/'                          # relative to `__file__`
+    LOG_DIR     = "log/"                            # relative to OUT_DIR
+    CKPT_DIR    = "ckpt/"                           # relative to OUT_DIR
+
+    # data parameters 
+    DATA_DIR    = "../../data/"                     # relative to `__file__`
+    DATA_TRAIN  = "refined/yarn-refined.train.csv"  # relative to DATA_DIR
+    DATA_TEST   = "refined/yarn-refined.test.csv"   # relative to DATA_DIR
 
     # model parameters
-    MODEL_NAME = "efficientnet"
+    MODEL_NAME = None
     
     # train parameters
     EPOCHS = 100
@@ -35,20 +36,28 @@ class C:
             if hasattr(C, key):
                 setattr(C, key, v)
             else:
-                raise KeyError(f"Config key {key} not found in class C.")
+                raise KeyError(f"Config key {key} not found in class C.")  
+        cls.postprocess()
+    
+    @classmethod
+    def postprocess(cls):
+        def validate_dirs(*ds):
+            for d in ds: 
+                if not os.path.exists(d): 
+                    os.makedirs(d)
+        def validate_files(*fs):
+            for f in fs:
+                if not os.path.exists(f): 
+                    raise FileNotFoundError(f"file not found at: \"{os.path.abspath(f)}\"")
         
-        # creating & absolute directories
-        def ca_(*ds): 
-            d = os.path.join(*ds)
-            if not os.path.exists(d): os.makedirs(d)
-            return os.path.abspath(d)
-        cls.LOG_DIR = ca_(cls.OUT_DIR, cls.LOG_DIR)
-        cls.CKPT_DIR = ca_(cls.OUT_DIR, cls.CKPT_DIR)
+        C.OUT_DIR = os.path.join(os.path.dirname(__file__), C.OUT_DIR)
+        C.DATA_DIR = os.path.join(os.path.dirname(__file__), C.DATA_DIR)
+        C.LOG_DIR = os.path.join(C.OUT_DIR, C.LOG_DIR)
+        C.CKPT_DIR = os.path.join(C.OUT_DIR, C.CKPT_DIR)
+        C.DATA_TRAIN = os.path.join(C.DATA_DIR, C.DATA_TRAIN)
+        C.DATA_TEST = os.path.join(C.DATA_DIR, C.DATA_TEST)
 
-        # validate data csv 
-        cls.DATA_TRAIN = os.path.join(cls.DATA_DIR, cls.DATA_TRAIN)
-        cls.DATA_TEST = os.path.join(cls.DATA_DIR, cls.DATA_TEST)
-        if not os.path.exists(cls.DATA_TRAIN):
-            raise FileNotFoundError(f"train data not found at: \"{os.path.abspath(cls.DATA_TRAIN)}\"")
-        if not os.path.exists(cls.DATA_TEST):
-            raise FileNotFoundError(f"test data not found at: \"{os.path.abspath(cls.DATA_TEST)}\"")
+        validate_dirs(C.OUT_DIR, C.LOG_DIR, C.CKPT_DIR)
+        validate_files(C.DATA_TRAIN, C.DATA_TEST)
+
+C.init_from(os.path.join(os.path.dirname(__file__), "config/default.yaml"))

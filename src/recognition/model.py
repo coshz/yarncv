@@ -1,8 +1,8 @@
 import torch.nn as nn
-from models import models_builder
+from .models import models_builder
 
 
-class YARN_Model(nn.Module):
+class YarnModel(nn.Module):
     def __init__(self, model_name, out_dim=5):
         super().__init__()
         self.net = self.net_from_name(model_name, in_out_dim=(1, out_dim))
@@ -14,6 +14,9 @@ class YARN_Model(nn.Module):
     
     def num_classes(self):
         return self.out_dim_
+    
+    def device(self):
+        return next(self.parameters()).device
     
     @staticmethod
     def net_from_name(name, in_out_dim):

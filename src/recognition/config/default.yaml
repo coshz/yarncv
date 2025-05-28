@@ -1,6 +1,6 @@
 ### config to overwrite default values defined in class config.C ###
 
-mode: 'train' # 'train' | 'test'
+# mode: 'train' # 'train' | 'test' | 'infer'
 
 # [directory] #
 

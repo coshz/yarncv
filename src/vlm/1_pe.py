@@ -1,14 +1,12 @@
 """
 :Prompt engineering
 """
-
 import os
 from openai import OpenAI
 import base64
 import pandas as pd
 import ast
 from concurrent.futures import ThreadPoolExecutor
-
 
 
 def encode_image(img_path):
@@ -45,6 +43,7 @@ def conversation_preset(img_path, label=None):
 DATA_DIR = '../../data'
 df_ = pd.read_csv('preset.csv',header=0,dtype={'img_path':str,'label_id':int})
 PRESET = [ (row[0], row[1]) for row in df_.itertuples(index=False) ]
+
 
 def make_client():
     client = OpenAI(
@@ -91,7 +90,7 @@ def test_acc(client, model, test_csv):
 
 def main():
     client = make_client() 
-    model = "qwen-vl-max" 
+    model = "qwen-vl-max"
     test_csv = 'img-test/yarn-img-test.test.csv'
     test_acc(client, model, test_csv)
 

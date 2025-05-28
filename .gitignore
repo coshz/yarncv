@@ -3,7 +3,8 @@
 .history
 __pycache__
 data/*
-!data/.gitkeep
+!data/*.py
 tmp/
+dev/
 *.log
 *.pth

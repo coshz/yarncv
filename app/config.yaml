@@ -1,0 +1,6 @@
+# web server 
+port: 51234
+
+# model 
+model_name: 'yarn_sim2'
+
