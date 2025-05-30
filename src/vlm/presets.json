@@ -1,0 +1,34 @@
+{
+    "desc": "presets for qwen model inference",
+    "presets": [
+        {   
+            "prompt": "Detect yarn defects: 0=normal, 1~3=abnormal; given a yarn image, plase point out its label (0,1,2,3).",
+            "pairs": [
+                { "image": "refined-2/0/Image_w720_h540_fn5009_1747379648018.png", "label": 0 },
+                { "image": "refined-2/0/Image_w720_h540_fn5120_1747379648591.png", "label": 0 },
+                { "image": "refined-2/2/Image_w720_h540_fn3312_1747375446310.png", "label": 2 },
+                { "image": "refined-2/2/Image_w720_h540_fn3028_1747375444844.png", "label": 2 },
+                { "image": "refined-2/2/Image_w720_h540_fn4639_1747375453166.png", "label": 2 },
+                { "image": "refined-2/2/Image_w720_h540_fn4713_1747375453545.png", "label": 2 },
+                { "image": "refined-2/1/Image_w720_h540_fn1164_1747376273768.png", "label": 1 },
+                { "image": "refined-2/1/Image_w720_h540_fn1737_1747376276730.png", "label": 1 },
+                { "image": "refined-2/4/Image_w720_h540_fn102_1747378033577.png", "label": 3 },
+                { "image": "refined-2/4/Image_w720_h540_fn69_1747378033410.png", "label": 3 }
+            ]
+        }, 
+        {
+            "prompt": "Detect yarn defects: 0=normal, 1~2=abnormal; given a yarn image, plase point out its label (0,1,2).",
+            "pairs": [
+                { "image": "refined-2/0/Image_w720_h540_fn5009_1747379648018.png", "label": 0 },
+                { "image": "refined-2/0/Image_w720_h540_fn5120_1747379648591.png", "label": 0 },
+                { "image": "refined-2/2/Image_w720_h540_fn3312_1747375446310.png", "label": 2 },
+                { "image": "refined-2/2/Image_w720_h540_fn3028_1747375444844.png", "label": 2 },
+                { "image": "refined-2/2/Image_w720_h540_fn4639_1747375453166.png", "label": 2 },
+                { "image": "refined-2/2/Image_w720_h540_fn4713_1747375453545.png", "label": 2 },
+                { "image": "refined-2/1/Image_w720_h540_fn1164_1747376273768.png", "label": 1 },
+                { "image": "refined-2/1/Image_w720_h540_fn1737_1747376276730.png", "label": 1 }
+            ]
+        }
+
+    ]
+}

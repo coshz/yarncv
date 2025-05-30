@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
     if args.infer:
         predictor = YarnPredictor(model)
-        print(predictor.predict_from_files(args.infer).tolist())
+        print(predictor.predict_from_files(args.infer))
     else:
         dataloaders = create_yarn_dataloaders(C.DATA_DIR, C.DATA_TRAIN, C.DATA_TEST,C.BATCH_SIZE)
         trainer = YarnTrainer(model,dataloaders)

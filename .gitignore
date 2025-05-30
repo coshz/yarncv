@@ -7,4 +7,5 @@ data/*
 tmp/
 dev/
 *.log
-*.pth
+# *.pth
+*.zip

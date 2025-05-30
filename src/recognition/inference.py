@@ -10,17 +10,19 @@ class YarnPredictor:
         self.load_checkpoint_()
 
     def __call__(self, imgs):
-        return self.predict(imgs) 
+        return self.predict(imgs, return_probs=False, tolist=False) 
     
-    def predict(self, imgs, return_probs=False):
+    def predict(self, imgs, return_probs=False, tolist=False):
         with torch.no_grad(): logits = self.model(imgs)
         if return_probs:
-            return torch.softmax(logits, 1)
+            r = torch.softmax(logits, 1)
         else:
-            return torch.argmax(logits, 1)
+            r = torch.argmax(logits, 1)
+        if tolist: r = r.tolist()
+        return r
     
-    def predict_from_files(self, files:list[str]|list[bytes], return_probs=False):
-        return self.predict(read_images(files).to(self.model.device()), return_probs)
+    def predict_from_files(self, files:list[str]|list[bytes]):
+        return self.predict(read_images(files).to(self.model.device()), return_probs=False, tolist=True)
     
     def load_checkpoint_(self, ckpt_path=''):
         if not ckpt_path: 

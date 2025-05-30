@@ -33,7 +33,7 @@ def conversation_preset(img_path, label=None):
     res = [{
         "role": "user", 
         "content": [ 
-            { "type": "image_url", "image_url": { "url": encode_image(img_path) } }  # encode_image(img_path)
+            { "type": "image_url", "image_url": { "url": encode_image(img_path) } }
         ] 
     },]
     if label: res += [ {"role": "assistant", "content": expected_response(label)} ]
@@ -41,7 +41,7 @@ def conversation_preset(img_path, label=None):
         
 
 DATA_DIR = '../../data'
-df_ = pd.read_csv('preset.csv',header=0,dtype={'img_path':str,'label_id':int})
+df_ = pd.read_csv('preset2.csv',header=0,dtype={'img_path':str,'label_id':int})
 PRESET = [ (row[0], row[1]) for row in df_.itertuples(index=False) ]
 
 
@@ -90,7 +90,9 @@ def test_acc(client, model, test_csv):
 
 def main():
     client = make_client() 
-    model = "qwen-vl-max"
+    # model = "qwen-vl-max" Acc=75
+    # model = 'qwen2.5-vl-3b-instruct' # Acc=25
+    model = "qwen2-vl-72b-instruct" #
     test_csv = 'img-test/yarn-img-test.test.csv'
     test_acc(client, model, test_csv)
 

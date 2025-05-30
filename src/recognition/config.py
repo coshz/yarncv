@@ -57,7 +57,7 @@ class C:
         C.DATA_TRAIN = os.path.join(C.DATA_DIR, C.DATA_TRAIN)
         C.DATA_TEST = os.path.join(C.DATA_DIR, C.DATA_TEST)
 
-        validate_dirs(C.OUT_DIR, C.LOG_DIR, C.CKPT_DIR)
-        validate_files(C.DATA_TRAIN, C.DATA_TEST)
+        # validate_dirs(C.OUT_DIR, C.LOG_DIR, C.CKPT_DIR)
+        # validate_files(C.DATA_TRAIN, C.DATA_TEST)
 
 C.init_from(os.path.join(os.path.dirname(__file__), "config/default.yaml"))

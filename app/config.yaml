@@ -1,6 +1,7 @@
-# web server 
-port: 51234
 
 # model 
-model_name: 'yarn_sim2'
+net_name: 'yarn_sim2'
+
+# Qwen 
+qwen_name: 'Qwen2-VL-2B'
 
