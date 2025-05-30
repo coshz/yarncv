@@ -2,8 +2,8 @@
 .DS_Store
 .history
 __pycache__
-data/*
-!data/*.py
+# data/*
+# !data/*.py
 tmp/
 dev/
 *.log
