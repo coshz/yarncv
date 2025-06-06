@@ -83,6 +83,6 @@ class QwenPredictor:
             il_pairs = [(it['image'], it['label']) for it in csv_or_pairs]
         else:
             raise TypeError("csv_or_pairs type not supported: expect str or dict")
-        data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../data'))
+        data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../data/data-2'))
         conversation = [qa for img, label in il_pairs for qa in make_qa_(encode_image(os.path.join(data_dir,img)), label)]
         return conversation

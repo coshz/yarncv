@@ -28,7 +28,23 @@
                 { "image": "refined-2/1/Image_w720_h540_fn1164_1747376273768.png", "label": 1 },
                 { "image": "refined-2/1/Image_w720_h540_fn1737_1747376276730.png", "label": 1 }
             ]
+        },
+        {
+            "prompt":"Detect yarn defects: 0=normal, 1~2=abnormal; given a yarn image, plase point out its label (0,1,2).",
+            "pairs":[
+                {"image": "preset/2-04.png", "label": 2},
+                {"image": "preset/2-03.png", "label": 2},
+                {"image": "preset/2-02.png", "label": 2},
+                {"image": "preset/2-01.png", "label": 2},
+                {"image": "preset/1-02.png", "label": 0},
+                {"image": "preset/1-03.png", "label": 0},
+                {"image": "preset/1-01.png", "label": 0},
+                {"image": "preset/3-04.png", "label": 1},
+                {"image": "preset/1-04.png", "label": 0},
+                {"image": "preset/3-01.png", "label": 1},
+                {"image": "preset/3-02.png", "label": 1},
+                {"image": "preset/3-03.png", "label": 1}
+            ]
         }
-
     ]
 }

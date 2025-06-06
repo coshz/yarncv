@@ -1,2 +1,3 @@
 #!/bin/zsh
-fastapi run app/web/main.py
+# fastapi run app/web/main.py 
+uvicorn app.web.main:app
