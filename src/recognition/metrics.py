@@ -1,17 +1,15 @@
 import torch 
-from .inference import YarnPredictor
 
 
 def eval_metrics(dataloader, model):
     nc = model.num_classes()
     TP, TN, FP, FN = [0]*nc, [0]*nc, [0]*nc, [0]*nc
-    pred = YarnPredictor(model)
     model.eval()
     with torch.no_grad():
         device_ = model.device()
         for IMAGEs, LABELs in dataloader:
             IMAGEs, LABELs = IMAGEs.to(device_), LABELs.to(device_)
-            PREDICTEDs = pred(IMAGEs)
+            PREDICTEDs = torch.argmax(model(IMAGEs), 1)
             for c in range(nc):
                 TP[c] += ((PREDICTEDs == c) & (LABELs == c)).sum().item()
                 TN[c] += ((PREDICTEDs != c) & (LABELs != c)).sum().item()
@@ -35,7 +33,6 @@ def eval_metrics(dataloader, model):
 
 
 def eval_acc(dataloader, model):
-    pred = YarnPredictor(model)
     correct = 0
     total = 0
     model.eval()
@@ -43,7 +40,7 @@ def eval_acc(dataloader, model):
         device_ = model.device()
         for IMAGEs, LABELs in dataloader:
             IMAGEs, LABELs = IMAGEs.to(device_), LABELs.to(device_)
-            PREDICTEDs = pred(IMAGEs)
+            PREDICTEDs = torch.argmax(model(IMAGEs), 1)
             total += LABELs.size(0)
             correct += (PREDICTEDs==LABELs).sum().item()
     acc = 100.0 * correct/total

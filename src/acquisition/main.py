@@ -1,4 +1,5 @@
-from grabber import Grabber
+from .grabber import Grabber
+from ..common import make_logger
 import argparse
 
 
@@ -12,5 +13,6 @@ def make_parser():
 
 if __name__ == '__main__':
     args = make_parser().parse_args()
-    grabber = Grabber(log_name=args.log)
+    logger = make_logger(args.log)
+    grabber = Grabber(logger)
     grabber.start(fps=30,out_dir=args.out)

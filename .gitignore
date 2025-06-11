@@ -1,9 +1,11 @@
 .vscode
 .DS_Store
 .history
+.pytest_cache
 __pycache__
 # data/*
 # !data/*.py
+*.ipynb
 tmp/
 dev/
 *.log

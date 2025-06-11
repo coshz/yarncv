@@ -28,6 +28,6 @@ def test_acc(predicator, test_csv):
 
 
 if __name__ == '__main__':
-    predicator = YarnPredictor(YarnModel(model_name='yarn_sim2',out_dim=4))
+    predicator = YarnPredictor('yarn_sim2',out_dim=4)
     test_csv = os.path.join(DATA_DIR, 'test/yarn-test.test.csv')
     test_acc(predicator, test_csv)

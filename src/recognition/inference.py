@@ -1,32 +1,29 @@
 import torch 
 from .utils import read_images, search_checkpoint
 from .config import C
+from ..base import PredicatorBase
+from .model import YarnModel
 
 
-class YarnPredictor:
-    def __init__(self, model):
-        self.model = model
+class YarnPredictor(PredicatorBase):
+    def __init__(self, model_name:str, out_dim:int=4):
+        self.model = YarnModel(model_name, out_dim)
         self.model.eval()
         self.load_checkpoint_()
 
-    def __call__(self, imgs):
-        return self.predict(imgs, return_probs=False, tolist=False) 
+    def predict_from_bytes(self, img: bytes) -> int:
+        return self.predict_from_tensor_(read_images([img]).to(self.model.device()))[0]
+
+    def predict_from_path(self, img: str) -> int:
+        return self.predict_from_tensor_(read_images([img]).to(self.model.device()))[0]
     
-    def predict(self, imgs, return_probs=False, tolist=False):
-        with torch.no_grad(): logits = self.model(imgs)
-        if return_probs:
-            r = torch.softmax(logits, 1)
-        else:
-            r = torch.argmax(logits, 1)
-        if tolist: r = r.tolist()
-        return r
-    
-    def predict_from_files(self, files:list[str]|list[bytes]):
-        return self.predict(read_images(files).to(self.model.device()), return_probs=False, tolist=True)
-    
+    def predict_from_tensor_(self, imgs: torch.Tensor):
+        with torch.no_grad():
+            return self.model.predict(imgs.to(self.model.device()))
+
     def load_checkpoint_(self, ckpt_path=''):
         if not ckpt_path: 
-            ckpt_path = search_checkpoint( model_name=C.MODEL_NAME, ckpt_dir=C.CKPT_DIR, best=True)
+            ckpt_path = search_checkpoint(model_name=C.MODEL_NAME, ckpt_dir=C.CKPT_DIR, best=True)
             if not ckpt_path:
                 raise FileNotFoundError(f"Checkpoint file not found.")
         ckpt = torch.load(ckpt_path, map_location=self.model.device())

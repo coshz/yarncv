@@ -2,15 +2,18 @@ import alibabacloud_oss_v2 as oss
 import os 
 from concurrent.futures import ThreadPoolExecutor
 
-__all_ = [ 'ImageUploader']
+
+__all__ = [ 'ImageUploader']
 
 
 OSS_REGION = 'cn-hangzhou'
 OSS_ENDPOINT = 'oss-cn-hangzhou.aliyuncs.com'
 OSS_BUCKET = 'xzq-yarn'
 
+
 def make_osskey(img_path):
     return os.path.basename(img_path)
+
 
 def make_client_and_bucket(region, endpoint, bucket): 
     cfg = oss.config.load_default() 
@@ -31,7 +34,7 @@ def put_image_into_oss(client, bucket_name, key, image_path):
         ))
         return result
     if result.status_code != 200:
-        raise f"put error: {result.status_code}"
+        raise ValueError(f"put error: {result.status_code}")
 
 
 def get_image_from_oss(client, bucket_name, key, download_path):
@@ -44,7 +47,7 @@ def get_image_from_oss(client, bucket_name, key, download_path):
             with open(download_path, 'wb') as f:
                 f.write(stream.read())
     else:
-        raise f"get error: {result.status_code}"
+        raise ValueError(f"get error: {result.status_code}")
 
 
 class ImageUploader:

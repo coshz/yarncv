@@ -13,7 +13,7 @@ class C:
     DATA_TEST   = "refined/yarn-refined.test.csv"   # relative to DATA_DIR
 
     # model parameters
-    MODEL_NAME = None
+    MODEL_NAME = ""
     
     # train parameters
     EPOCHS = 100

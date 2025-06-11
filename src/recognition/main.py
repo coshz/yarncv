@@ -40,12 +40,11 @@ if __name__ == '__main__':
         parser.print_help()
         exit()
 
-    model = YarnModel(C.MODEL_NAME, 4)
-
     if args.infer:
-        predictor = YarnPredictor(model)
-        print(predictor.predict_from_files(args.infer))
+        predictor = YarnPredictor(C.MODEL_NAME,4)
+        print(predictor(args.infer))
     else:
+        model = YarnModel(C.MODEL_NAME, 4)
         dataloaders = create_yarn_dataloaders(C.DATA_DIR, C.DATA_TRAIN, C.DATA_TEST,C.BATCH_SIZE)
         trainer = YarnTrainer(model,dataloaders)
         if args.train: 

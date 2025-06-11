@@ -29,3 +29,7 @@ async def prediction_by_qwen(files: List[UploadFile] = File(...)):
 @app.post("/predict/local")
 async def prediction_by_local(files: List[UploadFile] = File(...)):
     return await responder_local.respond(files)
+
+@app.post("/dummy")
+async def prediction(files: List[UploadFile] = File(...)):
+    return files[0].filename

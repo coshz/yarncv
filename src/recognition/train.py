@@ -3,8 +3,9 @@ import torch
 from torch import nn
 import torch.optim as optim
 from .config import C
-from .utils import make_logger, get_device, search_checkpoint, img_augment
+from .utils import get_device, search_checkpoint, img_augment
 from .metrics import eval_acc, eval_metrics
+from ..common import make_logger
 
 
 class YarnTrainer:

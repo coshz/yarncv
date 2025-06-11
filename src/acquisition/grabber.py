@@ -1,12 +1,17 @@
-import sys
-sys.path.append("./MvImport")
+import os 
+import sys 
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "MvImport"))
 
 from ctypes import *
-from MvImport import *
-from check_device import check_and_obtain_device_list
-from upload_to_oss import ImageUploader
 import time
-from utils import *
+import logging
+from concurrent.futures import ThreadPoolExecutor
+
+from .MvImport import *
+from .check_device import check_and_obtain_device_list
+from .upload_to_oss import ImageUploader
+from .utils import make_image_name, make_timestamp
+from ..common import make_logger
 
 
 def prepare_camera():
@@ -49,9 +54,9 @@ def prepare_camera():
         raise Exception("set trigger mode fail! ret[0x%x]" % ret)
 
     # # ch:设置曝光时间 | en:Set exposure time
-    # ret = cam.MV_CC_SetFloatValue("ExposureTime", 2000)
-    # if ret != 0:
-    #     raise Exception("set exposure time fail! ret[0x%x]" % ret)
+    ret = cam.MV_CC_SetFloatValue("ExposureTime", 36) # us
+    if ret != 0:
+        raise Exception("set exposure time fail! ret[0x%x]" % ret)
     return cam 
 
 def destory_camera(cam:MvCamera):
@@ -61,12 +66,13 @@ def destory_camera(cam:MvCamera):
 
 
 class Grabber:
-    def __init__(self, log_name):
+    def __init__(self, logger:logging.Logger, callback=None):
         self.cam = prepare_camera()
-        self.logger = make_logger(log_name)
-        self.uploader = ImageUploader()
+        self.logger = logger
+        self.callback = callback
+        self.executor_ = ThreadPoolExecutor(max_workers=1)
 
-    def start(self, fps=30.0, out_dir="img/"):
+    def start(self, fps=30.0, out_dir='img/'):
         # ch:开始取流 | en:Start grab image
         ret = self.cam.MV_CC_StartGrabbing()
         if ret != 0:
@@ -77,22 +83,25 @@ class Grabber:
         # ret = self.cam.MV_CC_GetFloatValue("FrameRate", frame_rate_value)
         # if ret != 0:
         #     raise "Failed to get frame rate! ret[0x%x]" % ret
-
         # fps = min(fps, frame_rate_value.fCurValue)
-        self.logger.info("start to save image with rate: %.2f FPS" % fps)
 
+        self.logger.info("start to save image with rate: %.2f FPS" % fps)
         try: 
             while True:
-                st = time.time()
+                st = time.perf_counter()
                 img_path = self.save_image(4,out_dir)
-                # self.uploader.upload_async(img_path)
-                et = time.time() - st
-                time.sleep(max(0, 1/fps - et))
+                if self.callback: 
+                    self.executor_.submit(self.callback, img_path)
+                et = time.perf_counter()
+                time.sleep(max(0, 1/fps + st - et ))
         except KeyboardInterrupt:
             self.logger.info("Stopping capture by user keyboard interrupt...")
+        except Exception as e:
+            self.logger.critical(f"fatal error occured: {e}")
         finally:
             self.cam.MV_CC_StopGrabbing()
             destory_camera(self.cam)
+            self.executor_.shutdown(wait=True)
 
     def save_image(self, save_type, out_dir):
         def resolve_type_and_name(save_type, frame_info):
@@ -117,7 +126,7 @@ class Grabber:
         memset(byref(stOutFrame), 0, sizeof(stOutFrame))
         ret = self.cam.MV_CC_GetImageBuffer(stOutFrame, 20000)
         if None != stOutFrame.pBufAddr and 0 == ret:
-            self.logger.info(
+            self.logger.debug(
                 "get one frame: Width[%d], Height[%d], nFrameNum[%d]"
                 % (
                     stOutFrame.stFrameInfo.nWidth,
@@ -133,12 +142,12 @@ class Grabber:
                 raise NotImplementedError
             else:
                 ret = save_non_raw_image(img_type, stOutFrame, self.cam, img_path)
-            if ret != 0:
+            if ret == 0:
+                self.logger.debug(f"Image `{img_path}` saved") 
+            else:
                 self.cam.MV_CC_FreeImageBuffer(stOutFrame)
                 raise Exception("save image fail! ret[0x%x]" % ret)
-            else:
-                self.logger.info("Image saved")
-
+                
             self.cam.MV_CC_FreeImageBuffer(stOutFrame)
         else:
             raise Exception("no data[0x%x]" % ret)
@@ -162,3 +171,11 @@ def save_non_raw_image(nSaveImageType, stOutFrame, cam_instance:MvCamera, img_pa
     stSaveParam.iMethodValue = 1
     stSaveParam.nQuality = 80  # ch: JPG: (50,99], invalid in other format
     return cam_instance.MV_CC_SaveImageToFileEx(stSaveParam)
+
+
+if __name__  == '__main__()':
+    logger = make_logger("yarn")
+    uploader = ImageUploader()
+
+    # grabber equipped with uploader
+    grabber = Grabber(logger, callback=lambda img_path: uploader.upload_async(img_path))

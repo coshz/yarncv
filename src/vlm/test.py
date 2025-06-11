@@ -10,11 +10,11 @@ DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../data/d
 def test_acc(predicator, test_csv):
 
     # pred = QwenPredictor(model_name)
-    cache_f = os.path.abspath(os.path.join(os.path.dirname(__file__), './txt'))
+    # cache_f = os.path.abspath(os.path.join(os.path.dirname(__file__), './txt'))
     cache = []
-    with open(cache_f) as f:
-        for line in f.readlines():
-            cache.append(line.strip())
+    # with open(cache_f) as f:
+    #     for line in f.readlines():
+    #         cache.append(line.strip())
     # print(cache)
     # return 
 
@@ -39,11 +39,12 @@ def test_acc(predicator, test_csv):
 if __name__ == "__main__":
     # model_name = 'qwen2-vl-72b-instruct' # Acc=0.58
     # model_name = 'qwen2.5-vl-72b-instruct'
-    model_name = 'qwen-vl-max-2025-04-08'
-    predictor = QwenPredictor(model_name,preset_id=2)
-    # label = predictor(os.path.join(DATA_DIR, 'test/0/Image_w720_h540_fn2627_1749110279863.png'))
-    # test_csv = os.path.join(DATA_DIR, 'img-test/yarn-img-test.test.csv')
+    # model_name = 'qwen-vl-max-2025-04-08'
+    model_name = 'qwen-vl-max-latest'
+    # predictor = QwenPredictor(model_name,preset_id=3)
+    # test_csv = os.path.join(DATA_DIR, 'test/yarn-test.test.csv')  # 97% 
+    predictor = QwenPredictor(model_name,preset_id=4)
     test_csv = os.path.join(DATA_DIR, 'test/yarn-test.test.csv')
+    # test_csv = os.path.join(DATA_DIR, 'test/tmp.csv')
     test_acc(predictor, test_csv)
-    # print(label)
     

@@ -1,9 +1,9 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from typing import Union, List, Dict
-
+from app.api import PredicatorBase
 
 class ResponderBasic:
-    def __init__(self, predictor):
+    def __init__(self, predictor:PredicatorBase):
         self.predictor = predictor
 
     @staticmethod
@@ -27,7 +27,7 @@ class ResponderBasic:
         if len(f_valid) > 0:
             img_bytes_list = [await file.read() for file in f_valid]
             files = [file.filename for file in f_valid]
-            labels = self.predictor.predict_from_files(img_bytes_list)
+            labels = [self.predictor(img) for img in img_bytes_list]
             r.update({"data": self.make_data(files, labels)})
         if len(f_invalid) > 0:
             r.update({'invalid_files': [file.filename for file in f_invalid]})

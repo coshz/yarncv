@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 from .models import models_builder
 
@@ -17,6 +18,10 @@ class YarnModel(nn.Module):
     
     def device(self):
         return next(self.parameters()).device
+    
+    def predict(self, imgs: torch.Tensor):
+        logits = self.forward(imgs)
+        return torch.argmax(logits, 1).tolist()
     
     @staticmethod
     def net_from_name(name, in_out_dim):
