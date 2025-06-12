@@ -14,7 +14,7 @@ def make_argparser():
     parser.add_argument("--model", help="model name")
     parser.add_argument("--out", help="output directory of log and ckpt")
     parser.add_argument("--bs", type=int, help="batch size", )
-    parser.add_argument("--config", default="config/default.yaml", help="config file", )
+    parser.add_argument("--config", default="src/recognition/config/default.yaml", help="config file", )
     return parser
 
 

@@ -6,14 +6,14 @@ import sys
 # make fastapi happy
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 
-from app.api import g_predictor, qwen_predicator
+from app.api import local_predictor, qwen_predictor
 from app.web.responder import ResponderBasic
 
 
 app = FastAPI(tile="Yarn model service")
 
-responder_qwen = ResponderBasic(qwen_predicator)
-responder_local = ResponderBasic(g_predictor)
+responder_qwen = ResponderBasic(qwen_predictor)
+responder_local = ResponderBasic(local_predictor)
 
 
 @app.get("/health")

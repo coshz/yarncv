@@ -1,7 +1,8 @@
 
-# model 
-net_name: 'yarn_sim2'
+# local model 
+model_name: 'yarn_sim2'
+model_out_dim: 3
 
-# Qwen 
-qwen_name: 'Qwen2-VL-2B'
+# Qwen vl model
+qwen_name: 'qwen-vl-max-2025-04-08' # 'Qwen2-VL-2B'
 

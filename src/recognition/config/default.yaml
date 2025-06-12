@@ -10,8 +10,8 @@ out_dir: 'out/'
 
 # [dataset] #
 data_dir: '../../data/'
-data_train: 'refined-2/yarn-refined-2.train.csv'
-data_test:  'refined-2/yarn-refined-2.test.csv' # 'img-test/yarn-img-test.test.csv'
+data_train: 'refined@s2/yarn-refined@s2.train.csv' # 'refined-2/yarn-refined-2.train.csv'
+data_test:  'refined@s2/yarn-refined@s2.test.csv' # 'refined-2/yarn-refined-2.test.csv' # 'img-test/yarn-img-test.test.csv'
 
 # [model] #
 model_name: 'yarn_sim2' # 'resnet_2' # 'efficientnet'
@@ -19,5 +19,5 @@ model_name: 'yarn_sim2' # 'resnet_2' # 'efficientnet'
 # [train] #
 epochs: 100 
 val_interval: 5
-batch_size: 1
+batch_size: 32
 # learning_rate: 1E-3

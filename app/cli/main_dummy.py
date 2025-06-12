@@ -1,4 +1,4 @@
-from app.api import qwen_predicator, make_logger
+from app.api import qwen_predictor, make_logger
 # from app.api import Grabber
 from concurrent.futures import ThreadPoolExecutor
 import time
@@ -51,5 +51,5 @@ class DummyGrabber:
 if __name__ == '__main__':
     out_dir = "img/"
     if not os.path.exists(out_dir): os.mkdir(out_dir)
-    worker = YarnRT(qwen_predicator)
+    worker = YarnRT(qwen_predictor)
     worker.start(fps=2)

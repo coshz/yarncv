@@ -23,8 +23,10 @@ def write2csv(data_dir, out_dir=None, test_ratio=0.1):
     out_dir = out_dir or data_dir
 
     for d in sorted(os.listdir(data_dir)):
-        if d not in LABELS.keys(): continue
-        label_id = LABELS[d][0]
+        # if d not in LABELS.keys(): continue
+        # label_id = LABELS[d][0]
+        if d.isdigit(): label_id = d
+        else: continue
         lst = sorted(os.listdir(os.path.join(data_dir, d)))
         sampled, remained = split_sample(lst, test_ratio)
         excluded = ['.DS_Store', 'Thumbs.db']
